@@ -17,17 +17,20 @@ import { useState } from 'react';
 export function DialogCustom({ SaveText }: { SaveText: (data: Text) => void }) {
   const [data, setdata] = useState({
     name: '',
-    description: '',
+    text: '',
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setdata({ ...data, [e.target.name]: e.target.value });
   };
 
   const handleSend = () => {
-    if (data.name === '' || data.description === '') return;
-    console.log({ ...data, id: crypto.randomUUID() });
-    // SaveText({ ...data, id: crypto.randomUUID() });
+    if (data.name === '' || data.text === '') return;
+    console.log({ data });
+    // console.log({ ...data, id: crypto.randomUUID() });
+    SaveText(data);
   };
   return (
     <Dialog>
@@ -47,7 +50,7 @@ export function DialogCustom({ SaveText }: { SaveText: (data: Text) => void }) {
               Name
             </Label>
             <Input
-              onChange={(e) => handleChange(e)}
+              onChange={handleChange}
               name='name'
               id='name'
               className='col-span-3'
@@ -58,8 +61,8 @@ export function DialogCustom({ SaveText }: { SaveText: (data: Text) => void }) {
               descripción
             </Label>
             <Textarea
-              onChange={(e) => handleChange(e)}
-              name='description'
+              onChange={handleChange}
+              name='text'
               id='username'
               className='col-span-3 resize-none [field-sizing:content]'
             />

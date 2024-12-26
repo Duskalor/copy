@@ -21,7 +21,6 @@ import { DialogCustom } from './components/ui/dialogCustom';
 import { z } from 'zod';
 
 export interface Text {
-  id: string;
   name: string;
   text: string;
 }
@@ -30,9 +29,7 @@ const columns: ColumnDef<Text>[] = [
   {
     header: 'Nombre',
     accessorKey: 'name',
-    cell(props) {
-      return <TooltipDemo {...props.row.original} />;
-    },
+    cell: TooltipDemo,
   },
 
   {
@@ -57,10 +54,13 @@ function App() {
   const table = useReactTable({
     data: texts,
     columns,
+    meta: {
+      // updateData: async (id, newText) => {},
+    },
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const handleSave = () => (data: Text) => {
+  const handleSave = (data: Text) => {
     const result = schema.safeParse(data);
     if (!result.success) return;
     setText((prev) => [...prev, data]);

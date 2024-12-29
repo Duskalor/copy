@@ -55,7 +55,9 @@ function App() {
     data: texts,
     columns,
     meta: {
-      // updateData: async (id, newText) => {},
+      updateData: async (id, newText) => {
+        console.log(id, newText);
+      },
     },
     getCoreRowModel: getCoreRowModel(),
   });

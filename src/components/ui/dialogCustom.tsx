@@ -19,7 +19,7 @@ export function DialogCustom({ SaveText }: { SaveText: (data: Text) => void }) {
     name: '',
     text: '',
   });
-
+  const [open, setOpen] = useState(false);
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -29,11 +29,11 @@ export function DialogCustom({ SaveText }: { SaveText: (data: Text) => void }) {
   const handleSend = () => {
     if (data.name === '' || data.text === '') return;
     console.log({ data });
-    // console.log({ ...data, id: crypto.randomUUID() });
     SaveText(data);
+    setOpen(false);
   };
   return (
-    <Dialog>
+    <Dialog onOpenChange={() => setOpen(!open)} open={open}>
       <DialogTrigger asChild>
         <Button variant='outline'>Nuevo</Button>
       </DialogTrigger>

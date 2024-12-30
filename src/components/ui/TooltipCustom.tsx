@@ -5,44 +5,34 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { Textarea } from './textarea';
-import { useState } from 'react';
 
-// interface Props {
-//   id: string;
-//   name: string;
-//   text: string;
-//   SaveChanges: (id: string, text: string) => void;
-// }
+interface Props {
+  row: { original: { name: string; text: string } };
+}
 
-export function TooltipDemo({ table, row }: any) {
-  const { id, name, text } = row.original;
+export function TooltipDemo({ row }: Props) {
+  const { name, text } = row.original;
+  // console.log(row.original);
   const HandleCopy = () => {
     navigator.clipboard.writeText(text);
   };
-  const [newText, setNewText] = useState('');
-  const [open, setOpen] = useState(false);
-  // console.log(table);
-  const Onblur = () => {
-    table.options.meta.updateData(id, newText);
-  };
 
   return (
-    <TooltipProvider delayDuration={600}>
-      <Tooltip open={open} onOpenChange={setOpen}>
-        <TooltipTrigger asChild>
-          <span onClick={HandleCopy} className='cursor-pointer'>
-            {name}
-          </span>
-        </TooltipTrigger>
-        <TooltipContent>
-          <Textarea
-            defaultValue={text}
-            onChange={(e) => setNewText(e.target.value)}
-            // onBlur={Onblur}
-            className='[field-sizing:content] resize-none'
-          />
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <div>
+      <TooltipProvider delayDuration={600}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span onClick={HandleCopy}>{name}</span>
+          </TooltipTrigger>
+          <TooltipContent>
+            <Textarea
+              disabled
+              defaultValue={text}
+              className='[field-sizing:content] resize-none'
+            />
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    </div>
   );
 }

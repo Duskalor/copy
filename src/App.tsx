@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import './App.css';
-import { Button } from './components/ui/button';
 import {
   ColumnDef,
   flexRender,
@@ -19,10 +18,12 @@ import {
 import { TooltipDemo } from './components/ui/TooltipCustom';
 import { DialogCustom } from './components/ui/dialogCustom';
 import { z } from 'zod';
+import { Acciones } from './components/Acciones';
 
 export interface Text {
   name: string;
   text: string;
+  id: string;
 }
 
 const columns: ColumnDef<Text>[] = [
@@ -35,14 +36,7 @@ const columns: ColumnDef<Text>[] = [
   {
     header: 'Acciones',
     accessorKey: 'actions',
-    cell: () => {
-      return (
-        <nav className=' space-x-2'>
-          <Button>Editar</Button>
-          <Button>Eliminar</Button>
-        </nav>
-      );
-    },
+    cell: Acciones,
   },
 ];
 const schema = z.object({
@@ -51,12 +45,20 @@ const schema = z.object({
 });
 function App() {
   const [texts, setText] = useState<Text[]>(initialState);
+  console.log(texts);
   const table = useReactTable({
     data: texts,
     columns,
     meta: {
-      updateData: async (id, newText) => {
-        console.log(id, newText);
+      updateRow(row: Text) {
+        console.log(row);
+        const index = texts.findIndex((text) => text.id === row.id);
+        const newData = texts.with(index, row);
+        setText(newData);
+      },
+      deleteRow(id: string) {
+        const newData = texts.filter((text) => text.id !== id);
+        setText(newData);
       },
     },
     getCoreRowModel: getCoreRowModel(),
@@ -69,7 +71,7 @@ function App() {
   };
   return (
     <section className='container mx-auto'>
-      <DialogCustom SaveText={handleSave} />
+      <DialogCustom functionAction={handleSave} />
       <Table style={{ width: table.getTotalSize(), margin: 'auto' }}>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => {

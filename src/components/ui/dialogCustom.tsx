@@ -14,10 +14,17 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from './textarea';
 import { useState } from 'react';
 
-export function DialogCustom({ SaveText }: { SaveText: (data: Text) => void }) {
-  const [data, setdata] = useState({
-    name: '',
-    text: '',
+export function DialogCustom({
+  functionAction,
+  edit = false,
+  Idata,
+}: {
+  edit?: boolean;
+  Idata?: Text;
+  functionAction: (data: Text) => void;
+}) {
+  const [data, setdata] = useState(() => {
+    return Idata ? Idata : { name: '', text: '' };
   });
   const [open, setOpen] = useState(false);
   const handleChange = (
@@ -25,17 +32,20 @@ export function DialogCustom({ SaveText }: { SaveText: (data: Text) => void }) {
   ) => {
     setdata({ ...data, [e.target.name]: e.target.value });
   };
-
+  // console.log(Idata);
   const handleSend = () => {
     if (data.name === '' || data.text === '') return;
-    console.log({ data });
-    SaveText(data);
+    functionAction(
+      Idata ? { ...data, id: Idata.id } : { ...data, id: crypto.randomUUID() }
+    );
     setOpen(false);
+    setdata({ name: '', text: '' });
   };
+
   return (
     <Dialog onOpenChange={() => setOpen(!open)} open={open}>
       <DialogTrigger asChild>
-        <Button variant='outline'>Nuevo</Button>
+        <Button variant='outline'>{!edit ? 'Nuevo' : 'Edit'}</Button>
       </DialogTrigger>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
@@ -51,6 +61,7 @@ export function DialogCustom({ SaveText }: { SaveText: (data: Text) => void }) {
             </Label>
             <Input
               onChange={handleChange}
+              value={data.name}
               name='name'
               id='name'
               className='col-span-3'
@@ -64,12 +75,13 @@ export function DialogCustom({ SaveText }: { SaveText: (data: Text) => void }) {
               onChange={handleChange}
               name='text'
               id='username'
+              value={data.text}
               className='col-span-3 resize-none [field-sizing:content]'
             />
           </div>
         </div>
         <DialogFooter>
-          <Button onClick={handleSend}>Crear</Button>
+          <Button onClick={handleSend}>{!edit ? 'Crear' : 'Actualizar'}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

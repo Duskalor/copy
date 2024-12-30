@@ -5,7 +5,6 @@ export const Acciones = ({ table, row }: any) => {
   const { updateRow } = table.options.meta;
   const deleteRow = table.options.meta.deleteRow;
   const handleDelete = () => deleteRow(row.original.id);
-
   return (
     <nav>
       <ul className='flex gap-4'>

@@ -12,7 +12,6 @@ interface Props {
 
 export function TooltipDemo({ row }: Props) {
   const { name, text } = row.original;
-  // console.log(row.original);
   const HandleCopy = () => {
     navigator.clipboard.writeText(text);
   };
@@ -21,7 +20,7 @@ export function TooltipDemo({ row }: Props) {
     <div>
       <TooltipProvider delayDuration={600}>
         <Tooltip>
-          <TooltipTrigger asChild>
+          <TooltipTrigger asChild className='cursor-pointer'>
             <span onClick={HandleCopy}>{name}</span>
           </TooltipTrigger>
           <TooltipContent>

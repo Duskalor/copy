@@ -39,7 +39,7 @@ export function DialogCustom({
       Idata ? { ...data, id: Idata.id } : { ...data, id: crypto.randomUUID() }
     );
     setOpen(false);
-    setdata({ name: '', text: '' });
+    if (!Idata) setdata({ name: '', text: '' });
   };
 
   return (

@@ -4,7 +4,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { Textarea } from './textarea';
 
 interface Props {
   row: { original: { name: string; text: string } };
@@ -13,7 +12,11 @@ interface Props {
 export function TooltipDemo({ row }: Props) {
   const { name, text } = row.original;
   const HandleCopy = () => {
-    navigator.clipboard.writeText(text);
+    const clipboardItem = new ClipboardItem({
+      'text/html': new Blob([text], { type: 'text/html' }),
+      'text/plain': new Blob([text], { type: 'text/plain' }),
+    });
+    navigator.clipboard.write([clipboardItem]);
   };
 
   return (
@@ -24,11 +27,10 @@ export function TooltipDemo({ row }: Props) {
             <span onClick={HandleCopy}>{name}</span>
           </TooltipTrigger>
           <TooltipContent>
-            <Textarea
-              disabled
-              defaultValue={text}
-              className='[field-sizing:content] resize-none'
-            />
+            <div
+              className='bg-white p-2 rounded-md shadow-md text-black'
+              dangerouslySetInnerHTML={{ __html: text }}
+            ></div>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

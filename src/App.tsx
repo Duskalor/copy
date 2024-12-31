@@ -6,7 +6,6 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { initialState } from './lib/const';
 import {
   Table,
   TableBody,

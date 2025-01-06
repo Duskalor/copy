@@ -44,19 +44,16 @@ const schema = z.object({
   text: z.string(),
 });
 function App() {
-  // const [texts, setText] = useState<Text[]>(initialState);
   const [texts, setText] = useState<Text[]>(() => {
     return JSON.parse(localStorage.getItem('texts') || '[]');
   });
 
-  // console.log(texts);
   const table = useReactTable({
     data: texts,
     columns,
     getCoreRowModel: getCoreRowModel(),
     meta: {
       updateRow(row: Text) {
-        // console.log(row);
         const index = texts.findIndex((text) => text.id === row.id);
         const newData = texts.with(index, row);
         setText(newData);
@@ -146,25 +143,8 @@ function App() {
           )}
         </TableBody>
       </Table>
+      <Toaster richColors />
     </section>
-
-    // <main className='container mx-auto flex bg-red-800 '>
-    //   <section className='bg-gray-600'>
-    //     <Button>Nuevo</Button>
-
-    //     {texts.map((text) => {
-    //       return (
-    //         <div className='flex' key={text.id}>
-    //           <TooltipDemo {...text} />
-    //           <nav>
-    //             <Button>Editar</Button>
-    //             <Button>Eliminar</Button>
-    //           </nav>
-    //         </div>
-    //       );
-    //     })}
-    //   </section>
-    // </main>
   );
 }
 

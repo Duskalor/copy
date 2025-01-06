@@ -38,12 +38,10 @@ export function DialogCustom({
       : { [target.name]: target.value };
 
     const newData = { ...data, ...T };
-    console.log(newData);
     setdata(newData);
   };
 
   const handleSend = () => {
-    console.log({ data });
     if (data.name === '' || data.text === '') return;
     functionAction(
       Idata ? { ...data, id: Idata.id } : { ...data, id: crypto.randomUUID() }

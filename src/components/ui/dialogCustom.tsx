@@ -12,6 +12,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useState } from 'react';
+import { toast } from 'sonner';
 // import DOMPurify from 'dompurify';
 export function DialogCustom({
   functionAction,
@@ -22,17 +23,23 @@ export function DialogCustom({
   Idata?: Text;
   functionAction: (data: Text) => void;
 }) {
-  const [data, setdata] = useState(() => {
-    return Idata ? Idata : { name: '', text: '' };
-  });
+  const [data, setdata] = useState(() =>
+    Idata ? Idata : { name: '', text: '' }
+  );
   const [open, setOpen] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement> | React.FormEvent<HTMLDivElement>
   ) => {
     const target = e.target as HTMLInputElement;
-    console.log(target.name, target.value);
-    setdata({ ...data, [target.name]: target.value });
+
+    const T = target.dataset.name
+      ? { [target.dataset.name]: target.innerHTML }
+      : { [target.name]: target.value };
+
+    const newData = { ...data, ...T };
+    console.log(newData);
+    setdata(newData);
   };
 
   const handleSend = () => {
@@ -43,6 +50,7 @@ export function DialogCustom({
     );
     setOpen(false);
     if (!Idata) setdata({ name: '', text: '' });
+    toast.info(`Elemento ${Idata ? 'actualizado' : 'creado'}`);
   };
 
   const handlePaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
@@ -88,7 +96,9 @@ export function DialogCustom({
   return (
     <Dialog onOpenChange={() => setOpen(!open)} open={open}>
       <DialogTrigger asChild>
-        <Button variant='outline'>{!edit ? 'Nuevo' : 'Edit'}</Button>
+        <Button variant={!edit ? 'info' : 'outline'}>
+          {!edit ? 'Nuevo' : 'Edit'}
+        </Button>
       </DialogTrigger>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
@@ -116,9 +126,10 @@ export function DialogCustom({
               descripción
             </Label>
             <div
-              onChange={(e) => handleChange(e)}
+              onInput={(e) => handleChange(e)}
               dangerouslySetInnerHTML={edit ? { __html: data.text } : undefined}
               contentEditable
+              data-name='text'
               onPaste={handlePaste}
               className='col-span-3 border border-input rounded-md px-3 py-1 max-w-72  max-h-72 overflow-hidden scroll-y'
             ></div>

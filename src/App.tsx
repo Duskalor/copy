@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Toaster } from 'sonner';
 import './App.css';
 import {
   ColumnDef,
@@ -97,7 +98,7 @@ function App() {
   // }, []);
 
   return (
-    <section className='container mx-auto'>
+    <section className='container mx-auto p-5'>
       <DialogCustom functionAction={handleSave} />
       <Table style={{ width: table.getTotalSize(), margin: 'auto' }}>
         <TableHeader>

@@ -1,10 +1,14 @@
+import { toast } from 'sonner';
 import DeleteDialog from './DeleteDialog';
 import { DialogCustom } from './ui/dialogCustom';
 
 export const Acciones = ({ table, row }: any) => {
   const { updateRow } = table.options.meta;
   const deleteRow = table.options.meta.deleteRow;
-  const handleDelete = () => deleteRow(row.original.id);
+  const handleDelete = () => {
+    deleteRow(row.original.id);
+    toast.error(`Elemento eliminado : ${row.original.name}`);
+  };
   return (
     <nav>
       <ul className='flex gap-4'>

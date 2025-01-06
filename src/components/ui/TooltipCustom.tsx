@@ -16,7 +16,7 @@ export function TooltipDemo({ row }: Props) {
     const clipboardItem = new ClipboardItem({
       'text/html': new Blob([text], { type: 'text/html' }),
       'text/plain': new Blob([text], { type: 'text/plain' }),
-      'image/png': new Blob([text], { type: 'image/png' }),
+      // 'image/png': new Blob([text], { type: 'image/png' }),
     });
     navigator.clipboard.write([clipboardItem]);
     toast.success(`Copiado al portapapeles : ${name}`);
@@ -27,7 +27,7 @@ export function TooltipDemo({ row }: Props) {
       <TooltipProvider delayDuration={600}>
         <Tooltip>
           <TooltipTrigger asChild className='cursor-pointer'>
-            <span className='font-bold' onClick={HandleCopy}>
+            <span className='font-bold text-sm' onClick={HandleCopy}>
               {name}
             </span>
           </TooltipTrigger>
